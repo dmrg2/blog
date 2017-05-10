@@ -1,0 +1,229 @@
+.App {
+}
+.Header {
+  width: 1000px;
+  height: 160px;
+  color: #848484;
+  font-size: 60px;
+  filter: opacity(70%);
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 80px;
+}
+.Page {
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.Title {
+  text-align: center;
+}
+/* Content page CSS (list of contents) */
+.Content {
+  margin: 20px;
+}
+.EachContent {
+  box-shadow: 10px 10px 5px -5px rgba(227,227,227,0.34);
+  margin-bottom: 150px;
+  border: 1px solid #ddd;
+  padding: 30px;
+}
+.EachContentTitle {
+  font-size: 35px;
+  margin: 20px;
+  text-align: center;
+}
+.EachContentTime {
+  font-size: 15px;
+  text-align: right;
+  margin: 20px;
+  color: #919191;
+}
+.EachContentButton {
+  font-size: 15px;
+  text-align: right;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+.EachContentContent {
+  padding-top: 40px;
+  padding-bottom: 300px;
+}
+.WriteButtonDiv {
+  position: fixed;
+  top: 5%;
+  right: 10%;
+}
+.WriteButton {
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  font-size: 12px;
+  background: #ffffff;
+  padding: 4px 8px 4px 8px;
+  color: #919191;
+  border: solid #919191 1px;
+  margin-right: 10px;
+}
+.WriteButton:hover {
+  text-decoration: none;
+}
+.ContentButton {
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  font-size: 12px;
+  background: #ffffff;
+  padding: 4px 8px 4px 8px;
+  color: #919191;
+  border: solid #919191 1px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+/* Rich Editor section */
+.RichEditor-root {
+  background: #fff;
+  border: 1px solid #ddd;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  padding: 15px;
+}
+.RichEditor-editor {
+  border: 1px solid #ddd;
+  cursor: text;
+  font-size: 16px;
+  margin-top: 10px;
+  min-height: 500px;
+  max-height: 500px;
+  overflow-y:scroll;
+}
+.RichEditor-editor .public-DraftEditorPlaceholder-root,
+.RichEditor-editor .public-DraftEditor-content {
+  margin: 0 -15px -15px;
+  padding: 15px;
+}
+.RichEditor-editor .public-DraftEditor-content {
+  min-height: 100px;
+}
+.RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
+  display: none;
+}
+.RichEditor-editor .RichEditor-blockquote {
+  border-left: 5px solid #eee;
+  color: #666;
+  font-family: 'Hoefler Text', 'Georgia', serif;
+  font-style: italic;
+  margin: 16px 0;
+  padding: 10px 20px;
+}
+.RichEditor-editor .public-DraftStyleDefault-pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+  font-size: 16px;
+  padding: 20px;
+}
+.RichEditor-controls {
+  font-family: 'Helvetica', sans-serif;
+  font-size: 14px;
+  margin-bottom: 5px;
+  user-select: none;
+}
+.RichEditor-styleButton {
+  color: #999;
+  cursor: pointer;
+  margin-right: 16px;
+  padding: 2px 0;
+  display: inline-block;
+}
+.RichEditor-activeButton {
+  color: #000;
+}
+
+.RichEditor-root-edit {
+  background: #fff;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  padding: 15px;
+}
+.RichEditor-editor-edit {
+  border-top: 1px solid #ddd;
+  cursor: text;
+  font-size: 16px;
+  margin-top: 10px;
+}
+.RichEditor-editor-edit .public-DraftEditorPlaceholder-root,
+.RichEditor-editor-edit .public-DraftEditor-content {
+  margin: 0 -15px -15px;
+  padding: 15px;
+}
+.RichEditor-editor-edit .public-DraftEditor-content {
+  min-height: 100px;
+}
+.RichEditor-hidePlaceholder-edit .public-DraftEditorPlaceholder-root {
+  display: none;
+}
+.RichEditor-editor-edit .RichEditor-blockquote {
+  border-left: 5px solid #eee;
+  color: #666;
+  font-family: 'Hoefler Text', 'Georgia', serif;
+  font-style: italic;
+  margin: 16px 0;
+  padding: 10px 20px;
+}
+.RichEditor-editor-edit .public-DraftStyleDefault-pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+  font-size: 16px;
+  padding: 20px;
+}
+.RichEditor-controls-edit {
+  font-family: 'Helvetica', sans-serif;
+  font-size: 14px;
+  margin-bottom: 5px;
+  user-select: none;
+}
+.RichEditor-styleButton-edit {
+  color: #999;
+  cursor: pointer;
+  margin-right: 16px;
+  padding: 2px 0;
+  display: inline-block;
+}
+.RichEditor-activeButton-edit {
+  color: #000;
+}
+
+.WriteGeneral {
+  color: #848484;
+  font-size: 15px;
+}
+.WriteContentButton {
+  font-size: 15px;
+  text-align: center;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+.WriteTitle {
+  height: 20px;
+  width: 80%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  border: 1px solid #ddd;
+}
+.ImageInput {
+  margin-top: 20px;
+  display: flex
+}
+.ImageInputText {
+  color: #848484;
+  margin-right: 10px;
+}
+.EachContentImage {
+  text-align: center;
+}
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
