@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import {Editor, EditorState, RichUtils, Modifier, convertToRaw} from 'draft-js';
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  Modifier,
+  convertToRaw
+} from 'draft-js';
 import BlockStyleControls from './BlockStyleControls';
 import InlineStyleControls from './InlineStyleControls';
 import colorStyleMap from './colorStyleMap';
 import { connect } from 'react-redux';
 import * as Actions from '../actions/Actions';
 import * as Helper from '../Helper';
+import { Link } from 'react-router-dom';
 
 class Write extends Component {
   constructor(props) {
@@ -15,22 +22,22 @@ class Write extends Component {
     this.state = {
       editorState: EditorState.createEmpty(),
       titleState: EditorState.createEmpty(),
-      url: '',
+      url: ''
     };
 
-    this.onChange = (editorState) => this.setState({editorState});
-    this.onChangeTitle = (titleState) => this.setState({titleState});
+    this.onChange = editorState => this.setState({ editorState });
+    this.onChangeTitle = titleState => this.setState({ titleState });
     this.getBlockStyle = this.getBlockStyle.bind(this);
-    this.toggleBlockType = (type) => this._toggleBlockType(type);
-    this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
-    this.toggleColor = (toggledColor) => this._toggleColor(toggledColor);
-    this.onURLChange = (e) => this.setState({url: e.target.value});
+    this.toggleBlockType = type => this._toggleBlockType(type);
+    this.toggleInlineStyle = style => this._toggleInlineStyle(style);
+    this.toggleColor = toggledColor => this._toggleColor(toggledColor);
+    this.onURLChange = e => this.setState({ url: e.target.value });
     this.readyAndWrite = this.readyAndWrite.bind(this);
   }
 
   /* Draft js related functions */
   _handleKeyCommand(command) {
-    const {editorState} = this.state;
+    const { editorState } = this.state;
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
@@ -45,38 +52,33 @@ class Write extends Component {
   }
 
   _toggleBlockType(blockType) {
-    this.onChange(
-      RichUtils.toggleBlockType(
-        this.state.editorState,
-        blockType
-      )
-    );
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
   }
 
   _toggleInlineStyle(inlineStyle) {
     this.onChange(
-      RichUtils.toggleInlineStyle(
-        this.state.editorState,
-        inlineStyle
-      )
+      RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
     );
   }
 
   getBlockStyle(block) {
     switch (block.getType()) {
-      case 'blockquote': return 'RichEditor-blockquote';
-      default: return null;
+      case 'blockquote':
+        return 'RichEditor-blockquote';
+      default:
+        return null;
     }
   }
 
   _toggleColor(toggledColor) {
-    const {editorState} = this.state;
+    const { editorState } = this.state;
     const selection = editorState.getSelection();
 
-    const nextContentState = Object.keys(colorStyleMap)
-      .reduce((contentState, color) => {
-        return Modifier.removeInlineStyle(contentState, selection, color)
-      }, editorState.getCurrentContent());
+    const nextContentState = Object.keys(
+      colorStyleMap
+    ).reduce((contentState, color) => {
+      return Modifier.removeInlineStyle(contentState, selection, color);
+    }, editorState.getCurrentContent());
 
     let nextEditorState = EditorState.push(
       editorState,
@@ -109,7 +111,11 @@ class Write extends Component {
     const contentStateTitle = this.state.titleState.getCurrentContent();
 
     // Check title is empty OR more than 80 characters OR only spaces
-    if (contentStateTitle.hasText() && contentStateTitle.getPlainText().trim().length !== 0 && contentStateTitle.getPlainText().length<=80) {
+    if (
+      contentStateTitle.hasText() &&
+      contentStateTitle.getPlainText().trim().length !== 0 &&
+      contentStateTitle.getPlainText().length <= 80
+    ) {
       // Convert to raw format
       const rawContent = JSON.stringify(convertToRaw(contentState));
       const rawContentTitle = contentStateTitle.getPlainText();
@@ -120,23 +126,32 @@ class Write extends Component {
       let self = this;
 
       // Call writeHelper to write on Firebase
-      Helper.writeHelper(contentNumber, rawContentTitle, rawContent, time.toString(), this.state.url)
-      .then(function(response) {
+      Helper.writeHelper(
+        contentNumber,
+        rawContentTitle,
+        rawContent,
+        time.toString(),
+        this.state.url
+      ).then(function(response) {
         // Call readHelper to reload
-        Helper.readHelper().then(function (response) {
+        Helper.readHelper().then(function(response) {
           // Call ReadContent to render content page again
           self.props.ReadContent(response[0], response[1]);
         });
       });
+    } else if (contentStateTitle.getPlainText().trim().length === 0) {
+      alert('Please put title!');
+    } else if (contentStateTitle.getPlainText().length > 80) {
+      alert('Your title is too long!');
     }
-    else if (contentStateTitle.getPlainText().trim().length === 0){ alert("Please put title!"); }
-    else if (contentStateTitle.getPlainText().length>80) { alert("Your title is too long!") }
   }
 
   render() {
     return (
       <div className="RichEditor-root">
-        <div className="WriteGeneral">Title (Please put less than 80 characters)</div>
+        <div className="WriteGeneral">
+          Title (Please put less than 80 characters)
+        </div>
         <div className="WriteTitle" onClick={this.focus}>
           <Editor
             editorState={this.state.titleState}
@@ -156,7 +171,7 @@ class Write extends Component {
             onToggle={this.toggleInlineStyle}
           />
         </div>
-        <div className='RichEditor-editor' onClick={this.focus}>
+        <div className="RichEditor-editor" onClick={this.focus}>
           <Editor
             blockStyleFn={this.getBlockStyle}
             editorState={this.state.editorState}
@@ -168,19 +183,24 @@ class Write extends Component {
           />
         </div>
 
-        <div className='ImageInput'>
-          <div className='ImageInputText'>Add Image (URL)</div>
-          <input
-            onChange={this.onURLChange}
-            size="100"
-            ref="url"
-            type="text"
-          />
+        <div className="ImageInput">
+          <div className="ImageInputText">Add Image (URL)</div>
+          <input onChange={this.onURLChange} size="100" ref="url" type="text" />
         </div>
 
         <div className="WriteContentButton">
-          <button type="button" className="ContentButton" onClick={()=>this.readyAndWrite()}>Save</button>
-          <button type="button" className="ContentButton" onClick={this.props.ContentPage}>Cancel</button>
+          <Link to="/">
+            <button
+              type="button"
+              className="ContentButton"
+              onClick={() => this.readyAndWrite()}
+            >
+              Save
+            </button>
+          </Link>
+          <Link to="/">
+            <button type="button" className="ContentButton">Cancel</button>
+          </Link>
         </div>
       </div>
     );
@@ -189,15 +209,15 @@ class Write extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    contentNumber: state.contentNumber,
-  }
+    contentNumber: state.contentNumber
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    ReadContent: (contentAll, contentNumber) => dispatch(Actions.ReadContent(contentAll, contentNumber)),
-    ContentPage: () => dispatch(Actions.ContentPage())
-  }
+    ReadContent: (contentAll, contentNumber) =>
+      dispatch(Actions.ReadContent(contentAll, contentNumber))
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Write);

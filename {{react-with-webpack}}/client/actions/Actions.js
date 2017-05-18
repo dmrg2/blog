@@ -1,15 +1,19 @@
 export function ReadContent(contentAll, contentNumber) {
-  return { type: 'READ_CONTENT', contentAll, contentNumber }
+  return { type: 'READ_CONTENT', contentAll, contentNumber };
+}
+
+export function RefreshContent() {
+  return { type: 'REFRESH_CONTENT' };
 }
 
 export function WritePage() {
-  return { type: 'WRITE_PAGE' }
+  return { type: 'WRITE_PAGE' };
 }
 
 export function ContentPage() {
-  return { type: 'CONTENT_PAGE' }
+  return { type: 'CONTENT_PAGE' };
 }
 
 export function EditPage(id) {
-  return { type: 'EDIT_PAGE', id }
+  return { type: 'EDIT_PAGE', id };
 }

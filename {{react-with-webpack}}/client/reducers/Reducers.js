@@ -2,13 +2,13 @@ const initialState = {
   page: 'reading',
   empty: false,
   contentNumber: 9999999,
-  contentAll: {hey: 'hey'},
-  id: ""
-}
+  contentAll: { hey: 'hey' },
+  id: ''
+};
 
 function Reducer(state, action) {
   if (typeof state === 'undefined') {
-    return initialState
+    return initialState;
   }
 
   let empty = false;
@@ -21,8 +21,7 @@ function Reducer(state, action) {
       if (action.contentAll == null) {
         empty = true;
         page = 'loading';
-      }
-      else {
+      } else {
         empty = false;
         page = 'reading';
       }
@@ -30,7 +29,12 @@ function Reducer(state, action) {
         page,
         empty,
         contentNumber: action.contentNumber,
-        contentAll: action.contentAll,
+        contentAll: action.contentAll
+      });
+
+    case 'REFRESH_CONTENT':
+      return Object.assign({}, state, {
+        page: 'refresh'
       });
 
     case 'WRITE_PAGE':
@@ -42,16 +46,16 @@ function Reducer(state, action) {
       return Object.assign({}, state, {
         page: 'reading',
         empty: false
-    });
+      });
 
     case 'EDIT_PAGE':
       return Object.assign({}, state, {
         page: 'editing',
         id: action.id
-    });
+      });
 
     default:
-      return state
+      return state;
   }
 }
 

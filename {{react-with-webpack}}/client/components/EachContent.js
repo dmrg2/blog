@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import {Editor, EditorState, convertFromRaw} from 'draft-js';
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import { connect } from 'react-redux';
 import * as Actions from '../actions/Actions';
 import colorStyleMap from './colorStyleMap';
 import fb from '../Firebase';
 import * as Helper from '../Helper';
+import { Link } from 'react-router-dom';
 
 class EachContent extends Component {
   constructor(props) {
@@ -23,25 +24,29 @@ class EachContent extends Component {
   componentWillMount() {
     // Check if there is any content. If there is, render it!
     if (this.props.contentAll[this.props.id].title !== undefined) {
-      const contentState = convertFromRaw(JSON.parse(this.props.contentAll[this.props.id].content));
+      const contentState = convertFromRaw(
+        JSON.parse(this.props.contentAll[this.props.id].content)
+      );
       const editorState = EditorState.createWithContent(contentState);
-      this.setState({editorState: editorState});
+      this.setState({ editorState: editorState });
     }
   }
 
-  timeFormatter () {
+  timeFormatter() {
     let time = new Date(this.props.contentAll[this.props.id].time);
     let date = time.toDateString();
     let hour = time.getHours();
     let min = time.getMinutes();
     let am = 'am';
-    if (hour === 0) { hour = "12"; }
-    else if (hour === 12) { am = 'pm'; }
-    else if (hour > 12) {
+    if (hour === 0) {
+      hour = '12';
+    } else if (hour === 12) {
+      am = 'pm';
+    } else if (hour > 12) {
       am = 'pm';
       hour %= 12;
     }
-    if (min<10) {
+    if (min < 10) {
       min = '0' + min;
     }
     return `${date} (${hour}:${min} ${am})`;
@@ -49,27 +54,52 @@ class EachContent extends Component {
 
   getBlockStyle(block) {
     switch (block.getType()) {
-      case 'blockquote': return 'RichEditor-blockquote';
-      default: return null;
+      case 'blockquote':
+        return 'RichEditor-blockquote';
+      default:
+        return null;
     }
   }
 
   removeContent(id) {
     let self = this;
-    fb.database().ref('ids/' + id).remove()
-    .then(Helper.readHelper().then(function (response) { self.props.ReadContent(response[0], response[1]); }));
+    fb.database().ref('ids/' + id).remove().then(
+      Helper.readHelper().then(function(response) {
+        self.props.ReadContent(response[0], response[1]);
+      })
+    );
   }
 
   render() {
     return (
       <div className="EachContent" id={this.props.id}>
         <div className="EachContentButton">
-          <button type="button" className="ContentButton" onClick={()=>this.props.EditPage(this.props.id)}>Edit</button>
-          <button type="button" className="ContentButton" onClick={()=>this.removeContent(this.props.id)}>Remove</button>
+          <button
+            type="button"
+            className="ContentButton"
+            onClick={() => this.props.EditPage(this.props.id)}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            className="ContentButton"
+            onClick={() => this.removeContent(this.props.id)}
+          >
+            Remove
+          </button>
         </div>
-        <div className="EachContentTitle">{this.props.contentAll[this.props.id].title}</div>
+        <div className="EachContentTitle">
+          {this.props.contentAll[this.props.id].title}
+        </div>
         <div className="EachContentTime">{this.timeFormatter()}</div>
-        <div className="EachContentImage">{this.props.contentAll[this.props.id].url && <img src={this.props.contentAll[this.props.id].url} alt='blogImage' />}</div>
+        <div className="EachContentImage">
+          {this.props.contentAll[this.props.id].url &&
+            <img
+              src={this.props.contentAll[this.props.id].url}
+              alt="blogImage"
+            />}
+        </div>
         <div className="RichEditor-editor-edit RichEditor-root-edit">
           <Editor
             blockStyleFn={this.getBlockStyle}
@@ -79,8 +109,22 @@ class EachContent extends Component {
           />
         </div>
         <div className="EachContentButton">
-          <button type="button" className="ContentButton" onClick={()=>this.props.EditPage(this.props.id)}>Edit</button>
-          <button type="button" className="ContentButton" onClick={()=>this.removeContent(this.props.id)}>Remove</button>
+          <Link to="/editing">
+            <button
+              type="button"
+              className="ContentButton"
+              onClick={() => this.props.EditPage(this.props.id)}
+            >
+              Edit
+            </button>
+          </Link>
+          <button
+            type="button"
+            className="ContentButton"
+            onClick={() => this.removeContent(this.props.id)}
+          >
+            Remove
+          </button>
         </div>
       </div>
     );
@@ -89,15 +133,16 @@ class EachContent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    contentAll: state.contentAll,
-  }
+    contentAll: state.contentAll
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    ReadContent: (contentAll, contentNumber) => dispatch(Actions.ReadContent(contentAll, contentNumber)),
-    EditPage: (id) => dispatch(Actions.EditPage(id))
-  }
+    ReadContent: (contentAll, contentNumber) =>
+      dispatch(Actions.ReadContent(contentAll, contentNumber)),
+    EditPage: id => dispatch(Actions.EditPage(id))
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EachContent);
